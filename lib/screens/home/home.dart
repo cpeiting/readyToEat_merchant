@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
       backgroundColor: Colors.brown[50],
       appBar: AppBar(
         title: Text(
-          'Orders',
+          'Reservation',
           style: TextStyle(
             color: Colors.black,
             fontSize: 25,
