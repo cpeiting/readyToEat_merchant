@@ -50,7 +50,7 @@ class _OrderCompletedPageState extends State<OrderCompletedPage> {
                 return Padding(
                   padding: EdgeInsets.only(left: 16, right: 16, top: 5),
                   child: Card(
-                    color: Colors.white70,
+                    color: Colors.lightGreen,
                     child: ListView(
                       padding: EdgeInsets.only(left: 10, right: 10),
                       shrinkWrap: true,
@@ -63,11 +63,11 @@ class _OrderCompletedPageState extends State<OrderCompletedPage> {
                               Text(
                                 documentSnapshot.data[index]['username'],
                                 style: TextStyle(
-                                    color: Colors.black45, fontSize: 20),
+                                    color: Colors.white, fontSize: 20),
                               ),
                               Text(documentSnapshot.data[index]['userPhone'],
                                   style: TextStyle(
-                                      color: Colors.black45, fontSize: 13))
+                                      color: Colors.white, fontSize: 13))
                             ],
                           ),
                         ),
@@ -76,7 +76,7 @@ class _OrderCompletedPageState extends State<OrderCompletedPage> {
                           padding: EdgeInsets.only(bottom: 6),
                           child: Text(
                             'Item(s):',
-                            style: TextStyle(color: Colors.blue.withOpacity(0.5), fontSize: 18),
+                            style: TextStyle(color: Colors.white, fontSize: 18),
                           ),
                         ),
                         FutureBuilder<List<QueryDocumentSnapshot>>(
@@ -96,16 +96,16 @@ class _OrderCompletedPageState extends State<OrderCompletedPage> {
                                   itemBuilder: (_, index) {
                                     return Row(
                                       children: [
-                                        Icon(Icons.arrow_right,color: Colors.black45),
+                                        Icon(Icons.arrow_right,color: Colors.white70),
                                         Text(
                                             itemSnapshot.data[index]
                                                 ['menuName'],
                                             style: TextStyle(
-                                                color: Colors.black45)),
+                                                color: Colors.white70)),
                                         Text(
                                             ' x${itemSnapshot.data[index]['quantity']}',
                                             style: TextStyle(
-                                                color: Colors.black45)),
+                                                color: Colors.white70)),
                                       ],
                                     );
                                   });
