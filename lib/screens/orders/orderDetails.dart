@@ -129,8 +129,10 @@ class _OrderDetailsState extends State<OrderDetails> {
         future: getOrdersDetails(),
         builder: (_, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: Text('Loading'),
+            return Scaffold(
+              body: Center(
+                child: Text('Loading'),
+              ),
             );
           } else {
             return Scaffold(

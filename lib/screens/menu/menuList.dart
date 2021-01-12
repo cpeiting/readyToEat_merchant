@@ -115,99 +115,114 @@ class _MenuListState extends State<MenuList> {
 
                       var menuDocId = snapshot.data[index].id;
                       var menuPrice = restaurantMenu.price;
-//                      print('ssssssaaaa $menuDocId');
 
-                      return Column(
-                        children: [
-                          Container(
-                            child: ListTile(
-                              selected: isSelected,
-                              title: Text(snapshot.data[index]['title']),
-                              subtitle: Text(snapshot.data[index]['content']),
-                              trailing:
-                                  Text('RM ${snapshot.data[index]['price']}'),
-                              leading: Container(
-                                  child: CircleAvatar(
-                                radius: 50,
-                                backgroundColor: Colors.transparent,
-                                child: ClipRect(
-                                  child: SizedBox(
-                                    width: 180.0,
-                                    height: 180.0,
-                                    child: Image.network(
-                                      '${snapshot.data[index]['foodImg']}',
-                                      loadingBuilder: (BuildContext context,
-                                          Widget child,
-                                          ImageChunkEvent loadingProgress) {
-                                        if (loadingProgress == null)
-                                          return child;
-                                        return Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              )),
-//                              onLongPress: toggleSelection(),
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                      String item = snapshot.data[index].toString();
+                      return Dismissible(
+                        key: new Key(item),
+                        onDismissed: (direction){
+                          snapshot.data.removeAt(index);
+                          deleteMenu(menuDocId);
+                          Scaffold.of(context).showSnackBar(new SnackBar(
+                            content: new Text('Item dismissed.')
+                            ,));
+                        },
+                        background: Container(
+                          child: Icon(Icons.delete),
+                          color: Colors.red,
+                        ),
+                        child: Card(
+                          child: Column(
                             children: [
                               Container(
-                                child: FlatButton(
-                                  child: Text(
-                                    "Edit",
-                                    style: TextStyle(color: Colors.green),
-                                  ),
-                                  onPressed: () {
-                                    var menuDocId = snapshot.data[index].id;
-                                    updateDialog(menuDocId, menuPrice);
-
-                                    print("aaaaaaaa $menuDocId");
-                                  },
+                                child: ListTile(
+                                  selected: isSelected,
+                                  title: Text(snapshot.data[index]['title']),
+                                  subtitle: Text(snapshot.data[index]['content']),
+                                  trailing:
+                                      Text('RM ${snapshot.data[index]['price']}'),
+                                  leading: Container(
+                                      child: CircleAvatar(
+                                    radius: 50,
+                                    backgroundColor: Colors.transparent,
+                                    child: ClipRect(
+                                      child: SizedBox(
+                                        width: 180.0,
+                                        height: 180.0,
+                                        child: Image.network(
+                                          '${snapshot.data[index]['foodImg']}',
+                                          loadingBuilder: (BuildContext context,
+                                              Widget child,
+                                              ImageChunkEvent loadingProgress) {
+                                            if (loadingProgress == null)
+                                              return child;
+                                            return Center(
+                                              child: CircularProgressIndicator(),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  )),
+//                              onLongPress: toggleSelection(),
                                 ),
                               ),
-                              Container(
-                                child: FlatButton(
-                                  child: Text(
-                                    "Delete",
-                                    style: TextStyle(color: Colors.red),
-                                  ),
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      child: AlertDialog(
-                                        content:
-                                            Text("Are you sure to delete?"),
-                                        actions: [
-                                          FlatButton(
-                                              onPressed: () {
-                                                var menuDocId =
-                                                    snapshot.data[index].id;
-                                                deleteMenu(menuDocId);
-
-                                                print("aaaaaaaa $menuDocId");
-                                              },
-                                              child: Text("Yes")),
-                                          FlatButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text(
-                                              "No",
-                                            ),
-                                          )
-                                        ],
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    child: FlatButton(
+                                      child: Text(
+                                        "Edit",
+                                        style: TextStyle(color: Colors.white),
                                       ),
-                                    );
-                                  },
-                                ),
+                                      onPressed: () {
+                                        var menuDocId = snapshot.data[index].id;
+                                        updateDialog(menuDocId, menuPrice);
+
+                                        print("aaaaaaaa $menuDocId");
+                                      },
+                                      color: Colors.green,
+                                    ),
+                                  ),
+//                                  Container(
+//                                    child: FlatButton(
+//                                      child: Icon(Icons.delete,
+//                                      color: Colors.red,),
+//                                      onPressed: () {
+//                                        showDialog(
+//                                          context: context,
+//                                          child: AlertDialog(
+//                                            content:
+//                                                Text("Are you sure to delete?"),
+//                                            actions: [
+//                                              FlatButton(
+//                                                  onPressed: () {
+//                                                    var menuDocId =
+//                                                        snapshot.data[index].id;
+//                                                    deleteMenu(menuDocId);
+//
+//                                                    print("aaaaaaaa $menuDocId");
+//                                                  },
+//                                                  child: Text("Yes")),
+//                                              FlatButton(
+//                                                onPressed: () {
+//                                                  Navigator.pop(context);
+//                                                },
+//                                                child: Text(
+//                                                  "No",
+//                                                ),
+//                                              )
+//                                            ],
+//                                          ),
+//                                        );
+//                                      },
+//                                    ),
+//                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
+                        ),
                       );
                     });
               }

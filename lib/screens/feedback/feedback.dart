@@ -20,7 +20,9 @@ class _FeedbacksState extends State<Feedbacks> {
           'Feedback',
           style: TextStyle(
             color: Colors.black,
-            fontSize: 25,
+            fontSize: 23,
+            fontWeight: FontWeight.bold,
+
 //            fontFamily: 'OpenSans',
           ),
         ),
@@ -147,11 +149,14 @@ class _ListPageState extends State<ListPage> {
                 itemBuilder: (_, index) {
                   return Card(
                     child: ListTile(
-                      title: Text(snapshot.data[index]['username']),
-                      subtitle: Text(snapshot.data[index]['feedback']),
+                      title: Text(snapshot.data[index]['feedback'],style: TextStyle(
+                        fontWeight: FontWeight.bold,
+
+                      ),),
+                      subtitle: Text(snapshot.data[index]['username']),
                       leading: CircleAvatar(
                         child: Image(
-                          image: AssetImage('assets/image/feedback.jpg'),
+                          image: AssetImage('assets/image/smile.png'),
                         ),
                       ),
 //                title: Text('sdfnadjv'),

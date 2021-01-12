@@ -88,7 +88,7 @@ class _HomeState extends State<Home> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Icon(Icons.home),
+                    Icon(Icons.book),
                     GestureDetector(
                       child: Icon(Icons.chat),
                       onTap: () {
@@ -121,7 +121,7 @@ class _HomeState extends State<Home> {
                       },
                     ),
                     GestureDetector(
-                      child: Icon(Icons.person),
+                      child: Icon(Icons.assignment),
                       onTap: () {
                         setState(() {
                           Navigator.push(
@@ -206,16 +206,17 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
-  Future _data;
   final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
 
   Future getBookings() async {
     String restaurantId = FirebaseAuth.instance.currentUser.uid;
-    QuerySnapshot qn =
-        await FirebaseFirestore.instance.collection("bookings").where('restaurantId',isEqualTo:restaurantId).get();
-//    print("pt"+qn.docs.toString());
+    QuerySnapshot qn = await FirebaseFirestore.instance
+        .collection("bookings")
+        .where('restaurantId', isEqualTo: 'kadTQ2c7fuaVfhSYL6B8oNPtGmz1')
+        .get();
     return qn.docs;
   }
+  int pax = 0;
 
   navigateToDetail(cId, DocumentSnapshot post, bookingDateTime, valueGuest) {
     Navigator.push(
@@ -230,17 +231,10 @@ class _ListPageState extends State<ListPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    _data = getBookings();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       child: FutureBuilder(
-        future: _data,
+        future: getBookings(),
         builder: (_, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -251,55 +245,161 @@ class _ListPageState extends State<ListPage> {
                 itemCount: snapshot.data.length, //number of item
                 itemBuilder: (_, index) {
                   String cid = snapshot.data[index].id;
-                  var bookingDateTime = dateFormat
+//                  var bookingDate = dateFormat
+//                      .format(snapshot.data[index]['selectedDate'].toDate());
+
+                  var bookingDate = DateFormat('dd  MMM  yyyy')
+                      .format(snapshot.data[index]['selectedDate'].toDate());
+
+                  var bookingTime = DateFormat('hh:mm:a')
                       .format(snapshot.data[index]['selectedDate'].toDate());
 
                   String valueGuest = snapshot.data[index]['valueGuests'];
-                  return Card(
-                    child: ListTile(
-                      title: Text(snapshot.data[index]['name']),
-                      subtitle: Text(
-                          dateFormat.format(
-                              snapshot.data[index]['selectedDate'].toDate()),
-                          style: TextStyle(color: Colors.green)),
-                      trailing: Text(
-                        snapshot.data[index]['valueGuests'],
-                        style: TextStyle(color: Colors.red),
-                      ),
-                      leading: Container(
-                          child: CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.black12,
-                        child: ClipOval(
-                          child: SizedBox(
-                            width: 180.0,
-                            height: 180.0,
-//                                child: Image.network(
-//                                  '${snapshot.data[index]['profilePic']}',
-//                                  loadingBuilder: (BuildContext context,
-//                                      Widget child,
-//                                      ImageChunkEvent loadingProgress) {
-//                                    if (loadingProgress == null) return child;
-//                                    return Center(
-//                                      child: CircularProgressIndicator(
-//                                      ),
-//                                    );
-//                                  },
-//                                ),
-                          ),
+                  String user = snapshot.data[index]['name'];
+                  String status = snapshot.data[index]['status'];
+
+                   pax =
+                      int.parse(valueGuest.replaceAll(RegExp('[^0-9]'), ''));
+
+                  return GestureDetector(
+                    onTap: () {
+                        navigateToDetail(cid, snapshot.data[index],
+                            bookingDate, valueGuest);
+                      },
+                    child: Stack(children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                            left: 25, right: 25, top: 5, bottom: 5),
+                        width: double.infinity,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10)),
                         ),
-                      )),
-                      onTap: () {
-                      navigateToDetail(cid, snapshot.data[index],
-                          bookingDateTime, valueGuest);
-                    },
-                    ),
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              top: 45,
+                              left: 10,
+                              child: Card(
+                                elevation: 1,
+                                color: Color(0xFFF17532),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Container( width: 300, height: 300),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 10, left: 16),
+                                child: Text(
+                                  user,
+                                  style: TextStyle(color: Colors.black87),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 10, left: 10),
+                                child: Text(
+                                  bookingDate,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontFamily: 'OpenSans'),
+                                ),
+                              ),
+                            ),
+
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 10, left: 10),
+                                child: Container(
+                                  padding: EdgeInsets.only(top: 5, right: 50,left: 5,bottom: 5),
+                                  color: Colors.green,
+                                  child: Text(
+                                    status,
+                                    style: TextStyle(
+                                      fontFamily: 'OpenSans',
+                                      color: Colors.white,),
+                                  ),
+                                )
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Padding(
+                                padding: EdgeInsets.only( top: 10,right: 10),
+                                child: Text(
+                                  bookingTime,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                    fontFamily: 'OpenSans',
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.bottomRight,
+                                child: Container(
+                                  margin: EdgeInsets.only(
+                                      right: 16, bottom: 10, left: 16),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: seatWidget(),
+                                  ),
+                                ))
+                          ],
+                        ),
+                      )
+                    ]),
                   );
+
+//                  return Card(
+//                    child: ListTile(
+//                      title: Text(snapshot.data[index]['name']),
+//                      subtitle: Text(
+//                          dateFormat.format(
+//                              snapshot.data[index]['selectedDate'].toDate()),
+//                          style: TextStyle(color: Colors.green)),
+//                      trailing: Text(
+//                        snapshot.data[index]['valueGuests'],
+//                        style: TextStyle(color: Colors.red),
+//                      ),
+//                      onTap: () {
+//                        navigateToDetail(cid, snapshot.data[index],
+//                            bookingDate, valueGuest);
+//                      },
+//                    ),
+//                  );
                 });
           }
         },
       ),
     );
+  }
+
+  List<Widget> seatWidget() {
+
+    List<Widget> places = [];
+    for(int i = 0 ; i < pax ; i++){
+      places.add( Icon(
+        Icons.event_seat,
+        color: Colors.white,
+      ));
+    }
+    return places;
+
   }
 }
 

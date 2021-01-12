@@ -64,7 +64,18 @@ class _updateMenuState extends State<updateMenu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Update Menu"),
+        iconTheme: IconThemeData(
+          color: Colors.black, //change
+          // your color here
+        ),
+        title: Text("Update Menu",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 25,
+//            fontFamily: 'OpenSans',
+          ),),
+        backgroundColor: Colors.white,
+        elevation: 0.0,
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -202,6 +213,7 @@ class _updateMenuState extends State<updateMenu> {
                       finalContent,
                         uploadedImg
                     );
+
 //                    Navigator.pop(context);
                     if (result == null) {
                       setState(() {

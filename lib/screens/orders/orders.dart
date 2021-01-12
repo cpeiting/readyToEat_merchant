@@ -13,9 +13,6 @@ class Orders extends StatefulWidget {
 }
 
 class _OrdersState extends State<Orders> {
-
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,6 +20,10 @@ class _OrdersState extends State<Orders> {
         length: 4,
         child: Scaffold(
           appBar: AppBar(
+            iconTheme: IconThemeData(
+              color: Colors.black, //change
+              // your color here
+            ),
             bottom: TabBar(
               isScrollable: true,
               tabs: [
@@ -31,8 +32,18 @@ class _OrdersState extends State<Orders> {
                 Tab(text: 'Completed'),
                 Tab(text: 'Rejected'),
               ],
+              labelColor: Colors.blueGrey,
             ),
-            title: Text('My Orders'),
+            title: Text(
+              'My Orders',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 25,
+//            fontFamily: 'OpenSans',
+              ),
+            ),
+            backgroundColor: Colors.white,
+            elevation: 0.0,
           ),
           body: TabBarView(
             children: [
@@ -46,7 +57,6 @@ class _OrdersState extends State<Orders> {
       ),
     );
   }
-
 
 //  Future<List<QueryDocumentSnapshot>> getOrders() async {
 //    String restaurantId = FirebaseAuth.instance.currentUser.uid;
@@ -100,5 +110,3 @@ class _OrdersState extends State<Orders> {
 //        ));
 //  }
 }
-
-

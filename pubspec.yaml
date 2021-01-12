@@ -61,6 +61,7 @@ flutter:
     - assets/image/avatar.png
     - assets/image/feedback.jpg
     - assets/image/noImg.png
+    - assets/image/smile.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
